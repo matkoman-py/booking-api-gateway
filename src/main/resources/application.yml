@@ -1,0 +1,54 @@
+spring:
+  cloud:
+    gateway:
+      routes[0]:
+        id: USER-SERVICE
+        predicates: Path=/api/user/**
+        uri: lb://USER-SERVICE
+      routes[1]:
+        id: ACCOMODATION-SERVICE
+        predicates: Path=/api/accomodation/**
+        uri: lb://ACCOMODATION-SERVICE
+      routes[2]:
+        uri: lb://NOTIFICATION-SERVICE
+        predicates: Path=/api/notification/**
+        id: NOTIFICATION-SERVICE
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/booking-realm
+#          jwk-set-uri: http://localhost:9090/realms/booking-realm/protocol/openid-connect/certs
+  main:
+    allow-bean-definition-overriding: true
+#      web-application-type: reactive
+  application:
+    name: API-GATEWAY
+
+jwt:
+  auth:
+    converter:
+      resource-id: booking-auth
+      principle-attribute: preferred_username
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: 'true'
+    fetch-registry: 'true'
+    fetch-service-url: http://localhost:8761/eureka/
+
+server:
+  port: '8080'
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway:
+            route:
+              RouteDefinitionLocation: INFO
+            nodeValue: TRACE
+    root: INFO
