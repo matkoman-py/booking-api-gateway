@@ -2,13 +2,13 @@ spring:
   cloud:
     gateway:
       routes[0]:
-        id: user-service
-        predicates: Path=/api/user/**
-        uri: lb://user-service
+        id: users-service
+        predicates: Path=/api/users/**
+        uri: lb://users-service
       routes[1]:
-        id: accomodation-service
-        predicates: Path=/api/accomodation/**
-        uri: lb://accomodation-service
+        id: accommodation-service
+        predicates: Path=/api/accommodation/**
+        uri: lb://accommodation-service
       routes[2]:
         uri: lb://notification-service
         predicates: Path=/api/notification/**
